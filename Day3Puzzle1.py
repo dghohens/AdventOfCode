@@ -55,6 +55,23 @@ fcontent = infile.read().split('\n')
 fcontent = fcontent[:-1]
 claim_regex = re.compile(r'^#\d+\s@\s(\d+),(\d+):\s(\d+)x(\d+)')
 
+claim_map = {}
+conflict_map = []
+
 for i in fcontent:
-    match = claim_regex.findall(i)
-    print(match)
+    inmatch = claim_regex.findall(i)
+    inmatch = inmatch[0]
+    match = [int(x) for x in inmatch]
+    for j in range(match[2]):
+        claim_map.setdefault(match[0] + j, [])
+        for k in range(match[3]):
+            if (match[1] + k) in claim_map[match[0] + j]:
+                if [match[0] + j, match[1] + k] in conflict_map:
+                    pass
+                else:
+                    conflict_map.append([match[0] + j, match[1] + k])
+                    print(conflict_map)
+            else:
+                claim_map[match[0] + j].append(match[1] + k)
+
+print(len(conflict_map))
