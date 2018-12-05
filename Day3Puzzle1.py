@@ -51,12 +51,13 @@ are within two or more claims?
 import re
 
 infile = open('input3.txt')
+outfile = open('claimconflicts.txt', 'w+')
 fcontent = infile.read().split('\n')
 fcontent = fcontent[:-1]
 claim_regex = re.compile(r'^#\d+\s@\s(\d+),(\d+):\s(\d+)x(\d+)')
 
 claim_map = {}
-conflict_map = []
+
 
 for i in fcontent:
     inmatch = claim_regex.findall(i)
@@ -66,12 +67,6 @@ for i in fcontent:
         claim_map.setdefault(match[0] + j, [])
         for k in range(match[3]):
             if (match[1] + k) in claim_map[match[0] + j]:
-                if [match[0] + j, match[1] + k] in conflict_map:
-                    pass
-                else:
-                    conflict_map.append([match[0] + j, match[1] + k])
-                    print(conflict_map)
+                outfile.write(str([match[0] + j, match[1] + k]) + '\n')
             else:
                 claim_map[match[0] + j].append(match[1] + k)
-
-print(len(conflict_map))
