@@ -30,7 +30,7 @@ large; if you copy/paste your input, make sure you get the whole thing.)
 """
 
 infile = open('input5.txt')
-fcontent = infile.read()
+fcontent = infile.read()[:-1]
 
 check = True
 
