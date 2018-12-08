@@ -61,9 +61,11 @@ from scipy.spatial import distance
 
 
 infile = open('input6.txt')
-fcontent = infile.read().split('\n')
+fcontent = infile.read().split('\n')[:-1]
 spatialdict = {}
 print(fcontent)
+points = [tuple([int(x) for x in i.split(',')]) for i in fcontent]
+print(points)
 
 '''Build a huge array of space, check each x,y location to determine what point is closest. Return the points,
 along with how many locations on the array are closest.
@@ -71,7 +73,20 @@ Need to make the input a list of lists (with ints in the sublists) for scipy to 
 '''
 for x in range(-1000,1500):
     for y in range(-1000,1500):
-        distance = 100000
+        closest_dist = 100000
         closest_point = []
-        for i in fcontent:
+        tie = False
+        for i in points:
             spatialdict.setdefault(i,0)
+            testdist = distance.cityblock([x,y],i)
+            if testdist < closest_dist:
+                closest_dist = testdist
+                closest_point = i
+            elif testdist == closest_dist:
+                tie = True
+                break
+            if not tie:
+                spatialdict[closest_point] += 1
+    print(x)
+
+print(spatialdict)
