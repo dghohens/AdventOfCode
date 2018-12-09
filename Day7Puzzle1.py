@@ -58,10 +58,35 @@ alphastring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 orderedsteps= []
 possiblesteps = []
 
-for i in alphastring:
-    # First, do every step that doesn't have a dependency in alphabetical order
-    if i not in dependent_step:
-        orderedsteps.append(i)
+
+# Populate possible steps, then add the lowest ordvalue to ordered steps
+for z in fcontent:
+    for i in alphastring:
+        if i not in dependent_step:
+            possiblesteps.append(i)
+
+
+
+'''
+for z in range(len(fcontent)):
+    foundstep = False
+    for i in alphastring:
+        if foundstep:
+            break
+        if i not in dependent_step:
+            if i not in orderedsteps:
+                orderedsteps.append(i)
+                foundstep = True
+                break
+        for y in fcontent:
+            if i in orderedsteps:
+                break
+            if y[36] == i and y[5] in orderedsteps:
+                orderedsteps.append(i)
+                foundstep = True
+                break
+
+
 
 for z in range(len(fcontent)):
     for i in alphastring:
@@ -73,6 +98,6 @@ for z in range(len(fcontent)):
         # Go through each possible step, add it to the ordered steps iff it's a lower ord value than everything else
         else:
             pass
-
+'''
 print(orderedsteps)
 print(possiblesteps)
