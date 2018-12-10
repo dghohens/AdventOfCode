@@ -71,8 +71,8 @@ print(points)
 along with how many locations on the array are closest.
 Need to make the input a list of lists (with ints in the sublists) for scipy to work.
 '''
-for x in range(-500,1000):
-    for y in range(-500,1000):
+for x in range(-1000,1500):
+    for y in range(-1000,1500):
         closest_dist = 100000
         closest_point = []
         tie = False
@@ -85,8 +85,8 @@ for x in range(-500,1000):
             elif testdist == closest_dist:
                 tie = True
                 break
-            if not tie:
-                spatialdict[closest_point] += 1
+        if not tie:
+            spatialdict[closest_point] += 1
     print(x)
 
 print(spatialdict)

@@ -55,16 +55,54 @@ fcontent = infile.read().split('\n')[:-1]
 required_step = [i[5] for i in fcontent]
 dependent_step = [i[36] for i in fcontent]
 alphastring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-orderedsteps= []
+orderedsteps = []
 possiblesteps = []
+
+
+def remove_dependencies(list_of_steps, met_dependency):
+    for i in list_of_steps:
+        if i[5] == met_dependency:
+            list_of_steps = poplist(list_of_steps, i)
+    return list_of_steps
+
+
+def poplist(list_to_pop, value_to_pop):
+    try:
+        print(list_to_pop)
+        list_to_pop = list_to_pop.pop(list_to_pop.index(value_to_pop))
+    except ValueError:
+        pass
+    return list_to_pop
+
+
+def checkord(possiblelist):
+    ordnum = 100
+    nextstep = ''
+    for i in possiblelist:
+        if ord(i) < ordnum:
+            ordnum = ord(i)
+            nextstep = i
+    return nextstep
 
 
 # Populate possible steps, then add the lowest ordvalue to ordered steps
 for z in fcontent:
-    for i in alphastring:
-        if i not in dependent_step:
-            possiblesteps.append(i)
-
+    for j in fcontent:
+        for i in alphastring:
+            if i not in dependent_step and i not in orderedsteps and i not in possiblesteps:
+                possiblesteps.append(i)
+        newstep = checkord(possiblesteps)
+        orderedsteps.append(newstep)
+        possiblesteps = poplist(possiblesteps, newstep)
+        fcontent = remove_dependencies(fcontent, newstep)
+        required_step = [i[5] for i in fcontent]
+        dependent_step = [i[36] for i in fcontent]
+        if newstep == '':
+            break
+        #print(orderedsteps)
+        #print(fcontent)
+        #print(possiblesteps)
+        #print(dependent_step)
 
 
 '''
@@ -99,5 +137,5 @@ for z in range(len(fcontent)):
         else:
             pass
 '''
-print(orderedsteps)
-print(possiblesteps)
+#print(orderedsteps)
+#print(possiblesteps)
