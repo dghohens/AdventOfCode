@@ -52,17 +52,16 @@ In what order should the steps in your instructions be completed?
 
 infile = open('input7.txt')
 fcontent = infile.read().split('\n')[:-1]
-required_step = [i[5] for i in fcontent]
-dependent_step = [i[36] for i in fcontent]
 alphastring = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 orderedsteps = []
 possiblesteps = []
 
 
-def remove_dependencies(list_of_steps, met_dependency):
+def remove_dependencies(list_of_steps, completedsteps):
     for i in list_of_steps:
-        if i[5] == met_dependency:
-            list_of_steps = poplist(list_of_steps, i)
+        for j in completedsteps:
+            if i[5] == j:
+                list_of_steps = poplist(list_of_steps, i)
     return list_of_steps
 
 
@@ -76,7 +75,7 @@ def poplist(list_to_pop, value_to_pop):
 
 
 def checkord(possiblelist):
-    ordnum = 100
+    ordnum = 240
     nextstep = ''
     for i in possiblelist:
         if ord(i) < ordnum:
@@ -84,58 +83,17 @@ def checkord(possiblelist):
             nextstep = i
     return nextstep
 
-
-# Populate possible steps, then add the lowest ordvalue to ordered steps
 for z in fcontent:
-    for j in fcontent:
-        for i in alphastring:
-            if i not in dependent_step and i not in orderedsteps and i not in possiblesteps:
-                possiblesteps.append(i)
-        newstep = checkord(possiblesteps)
-        orderedsteps.append(newstep)
-        possiblesteps = poplist(possiblesteps, newstep)
-        fcontent = remove_dependencies(fcontent, newstep)
+    for y in fcontent:
         required_step = [i[5] for i in fcontent]
         dependent_step = [i[36] for i in fcontent]
-        if newstep == '':
-            break
-        #print(orderedsteps)
-        #print(fcontent)
-        #print(possiblesteps)
-        #print(dependent_step)
+        for a in alphastring:
+            if a not in dependent_step and a not in orderedsteps and a not in possiblesteps:
+                possiblesteps.append(a)
+        next_step = checkord(possiblesteps)
+        orderedsteps.append(next_step)
+        possiblesteps = poplist(possiblesteps, next_step)
+        fcontent = remove_dependencies(fcontent, orderedsteps)
 
+print(orderedsteps)
 
-'''
-for z in range(len(fcontent)):
-    foundstep = False
-    for i in alphastring:
-        if foundstep:
-            break
-        if i not in dependent_step:
-            if i not in orderedsteps:
-                orderedsteps.append(i)
-                foundstep = True
-                break
-        for y in fcontent:
-            if i in orderedsteps:
-                break
-            if y[36] == i and y[5] in orderedsteps:
-                orderedsteps.append(i)
-                foundstep = True
-                break
-
-
-
-for z in range(len(fcontent)):
-    for i in alphastring:
-        # Next, populate the list of possible steps
-        if i in orderedsteps:
-            indices = [i for i, x in enumerate(required_step) if x == i]
-            for j in indices:
-                possiblesteps.append(dependent_step[j])
-        # Go through each possible step, add it to the ordered steps iff it's a lower ord value than everything else
-        else:
-            pass
-'''
-#print(orderedsteps)
-#print(possiblesteps)

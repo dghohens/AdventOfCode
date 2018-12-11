@@ -60,58 +60,33 @@ What is the size of the largest area that isn't infinite?
 from scipy.spatial import distance
 
 
-infile = open('input6.txt')
+infile = open('input6A.txt')
 fcontent = infile.read().split('\n')[:-1]
 spatialdict = {}
+print(fcontent)
 points = [tuple([int(x) for x in i.split(',')]) for i in fcontent]
 print(points)
 
-for i in points:
-    spatialdict.setdefault(i, 0)
-
-def pointchecker(pointlist, xpoint, ypoint):
-    closest_dist = 1000000
-    closest_point = ()
-    tie = False
-    for i in pointlist:
-        testdist = distance.cityblock([xpoint, ypoint], i)
-        if testdist < closest_dist:
-            closest_dist = testdist
-            closest_point = i
-            tie = False
-        elif testdist == closest_dist:
-            tie = True
-    return tie, closest_point
-
-def startingframe(pointlist):
-    edgepoints = []
-    for x in range(-5000,5500):
-        if pointchecker(pointlist, x, -5000)[0] != True:
-            testpoint = pointchecker(pointlist, x, -5000)[1]
-        if testpoint not in edgepoints:
-            edgepoints.append(testpoint)
-        if pointchecker(pointlist, x, -5000)[0] != True:
-            testpoint = pointchecker(pointlist, x, 5500)[1]
-        if testpoint not in edgepoints:
-            edgepoints.append(testpoint)
-    for y in range(-5000, 5500):
-        if pointchecker(pointlist, x, -5000)[0] != True:
-            testpoint = pointchecker(pointlist, -5000, y)[1]
-        if testpoint not in edgepoints:
-            edgepoints.append(testpoint)
-        if pointchecker(pointlist, x, -5000)[0] != True:
-            testpoint = pointchecker(pointlist, 5500, y)[1]
-        if testpoint not in edgepoints:
-            edgepoints.append(testpoint)
-    return edgepoints
-
-
-outerpoints = startingframe(points)
-
-for x in range(-100,600):
-    for y in range(-100,600):
-        if pointchecker(points, x, y)[0] == False and pointchecker(points, x, y)[1] not in outerpoints:
-            spatialdict[pointchecker(points,x,y)[1]] += 1
+'''Build a huge array of space, check each x,y location to determine what point is closest. Return the points,
+along with how many locations on the array are closest.
+Need to make the input a list of lists (with ints in the sublists) for scipy to work.
+'''
+for x in range(-1000,1500):
+    for y in range(-1000,1500):
+        closest_dist = 100000
+        closest_point = []
+        tie = False
+        for i in points:
+            spatialdict.setdefault(i,0)
+            testdist = distance.cityblock([x,y],i)
+            if testdist < closest_dist:
+                closest_dist = testdist
+                closest_point = i
+            elif testdist == closest_dist:
+                tie = True
+                break
+        if not tie:
+            spatialdict[closest_point] += 1
     print(x)
 
 print(spatialdict)
