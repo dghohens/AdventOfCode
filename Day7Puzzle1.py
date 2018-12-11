@@ -68,7 +68,8 @@ def remove_dependencies(list_of_steps, completedsteps):
 def poplist(list_to_pop, value_to_pop):
     try:
         print(list_to_pop)
-        list_to_pop = list_to_pop.pop(list_to_pop.index(value_to_pop))
+        list_to_pop.pop(list_to_pop.index(value_to_pop))
+        print(list_to_pop)
     except ValueError:
         pass
     return list_to_pop
