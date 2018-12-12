@@ -45,20 +45,20 @@ fcontent = infile.read().split('\n')[:-1]
 points = [tuple([int(x) for x in i.split(',')]) for i in fcontent]
 
 def pointchecker(pointlist, xpoint, ypoint):
+    testdist = 0
     for i in pointlist:
-        testdist = distance.cityblock([xpoint, ypoint], i)
+        testdist += distance.cityblock([xpoint, ypoint], i)
     return testdist
 
 
 closepoints = 0
 
 
-for x in range(-200,700):
-    for y in range(-200,700):
-        totaldist = 0
-        for i in points:
-            totaldist += pointchecker(i, x, y)
+for x in range(-1000,1500):
+    for y in range(-1000,1500):
+        totaldist = pointchecker(points, x, y)
         if totaldist < 10000:
             closepoints += 1
+    print(x)
 
 print(closepoints)

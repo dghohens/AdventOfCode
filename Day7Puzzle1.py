@@ -58,7 +58,9 @@ possiblesteps = []
 
 
 def remove_dependencies(list_of_steps, completedsteps):
+    print(list_of_steps)
     for i in list_of_steps:
+        print(i)
         for j in completedsteps:
             if i[5] == j:
                 list_of_steps = poplist(list_of_steps, i)
@@ -67,9 +69,7 @@ def remove_dependencies(list_of_steps, completedsteps):
 
 def poplist(list_to_pop, value_to_pop):
     try:
-        print(list_to_pop)
         list_to_pop.pop(list_to_pop.index(value_to_pop))
-        print(list_to_pop)
     except ValueError:
         pass
     return list_to_pop
@@ -92,6 +92,7 @@ for z in fcontent:
             if a not in dependent_step and a not in orderedsteps and a not in possiblesteps:
                 possiblesteps.append(a)
         next_step = checkord(possiblesteps)
+        print(next_step)
         orderedsteps.append(next_step)
         possiblesteps = poplist(possiblesteps, next_step)
         fcontent = remove_dependencies(fcontent, orderedsteps)
