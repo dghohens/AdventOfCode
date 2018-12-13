@@ -58,13 +58,12 @@ possiblesteps = []
 
 
 def remove_dependencies(list_of_steps, completedsteps):
-    print(list_of_steps)
+    steplist = [i for i in list_of_steps]
     for i in list_of_steps:
-        print(i)
         for j in completedsteps:
             if i[5] == j:
-                list_of_steps = poplist(list_of_steps, i)
-    return list_of_steps
+                steplist = poplist(steplist, i)
+    return steplist
 
 
 def poplist(list_to_pop, value_to_pop):
