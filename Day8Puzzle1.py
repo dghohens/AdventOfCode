@@ -38,34 +38,44 @@ that sum is 1+1+2+10+11+12+2+99=138.
 What is the sum of all metadata entries?
 """
 
-infile = open('input8.txt')
+infile = open('input8A.txt')
 fcontent = [int(i) for i in infile.read().split()]
 print(fcontent)
 
 metadata_content = []
 
-def subnodes(full_list, startingnode):
+def subnodes(full_list):
     modlist = [i for i in full_list]
     metas = []
-    while modlist[0]:
-        for i in range(0,len(modlist)):
+    while len(modlist) != 0:
+        for i in range(0, len(modlist)):
             # If no subnodes within the node, remove the node and add its metadata to the metas list
-            if modlist[i] == 0:
-                for j in range(1,modlist[i + 1]):
-                    metas.append(modlist[i + j + 1])
-                # Count subnodes down by one
-                modlist[i-2] -= 1
-                # Remove subnode
-                modlist = modlist[:i] + modlist[i + modlist[i+1] + 2:]
-        pass
+            try:
+                if modlist[i] == 0:
+                    for j in range(1, modlist[i + 1]):
+                        metas.append(modlist[i + j + 1])
+                    # Count subnodes down by one
+                    modlist[i-2] -= 1
+                    # Remove subnode
+                    modlist = modlist[:i] + modlist[i + modlist[i+1] + 2:]
+                    break
+            except IndexError:
+                pass
+    return metas
 
 
-def metadata():
-    pass
+def metadata(meta_list):
+    total = 0
+    for i in meta_list:
+        total += 1
+    return total
 
 
 def main():
+    metalist = subnodes(fcontent)
+    print(metalist)
+    metatotal = metadata(metalist)
+    print(metatotal)
     pass
-
 
 main()
